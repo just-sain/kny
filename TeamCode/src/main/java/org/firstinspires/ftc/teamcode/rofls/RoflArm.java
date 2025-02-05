@@ -1,0 +1,40 @@
+package org.firstinspires.ftc.teamcode.rofls;
+
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
+import org.firstinspires.ftc.teamcode.controllers.ArmController;
+
+@TeleOp(name = "rofl arm", group = "rofls")
+public class RoflArm extends LinearOpMode {
+    ArmController armController = new ArmController();
+
+    @Override
+    public void runOpMode() {
+
+        MultipleTelemetry telemetry = new MultipleTelemetry(FtcDashboard.getInstance().getTelemetry());
+        armController.initialize(hardwareMap);
+
+        waitForStart();
+
+        while(opModeIsActive()) {
+            if (gamepad1.a) {
+                armController.setTargetPosition(ArmController.Position.HOME);
+            } else if (gamepad1.b) {
+                armController.setTargetPosition(ArmController.Position.BACKWARD);
+            } else if (gamepad1.y) {
+                armController.setTargetPosition(ArmController.Position.BASKET);
+            } else if (gamepad1.x) {
+                armController.setTargetPosition(ArmController.Position.FORWARD);
+            }
+
+            armController.periodic();
+
+            armController.showLogs(telemetry);
+
+            telemetry.update();
+        }
+    }
+}

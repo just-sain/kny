@@ -1,59 +1,37 @@
-package org.firstinspires.ftc.teamcode.rofls;
+package org.firstinspires.ftc.teamcode.controllers;
 
 import androidx.annotation.NonNull;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.controllers.ArmController;
 
 @Config
-@TeleOp(name = "outtake arm test", group = "rofls")
-public class OuttakeArm extends LinearOpMode {
-
+public class ExtendController {
     // motors
     private DcMotorEx motor;
     // k of pid
     private double integralSum = 0;
-    public static double kP = 0.07, kI = 0.00000001, kD = 0.00000001;
+    public static double kP = 0.006, kI = 0.0000003, kD = 0.00000005;
     // needed
-    public static double target = ArmController.Position.HOME.getPos();
+    public static double target = Position.HOME.getPos();
     private ElapsedTime timer = new ElapsedTime();
     private double lastError = 0;
     // is manual or pid mode
     private boolean isManMode = false;
 
-    @Override
-    public void runOpMode() {
-
-        initialize(hardwareMap);
-
-        waitForStart();
-
-        while (opModeIsActive()) {
-
-
-            periodic();
-
-            showLogs(telemetry);
-
-            telemetry.update();
-        }
-    }
-
     // arm positions
     public enum Position {
         HOME(0),
-        MIDDLE(200),
-        LONG(350);
+        MIDDLE(900),
+        LONG(1500);
 
         Position(int pos) {
             this.position = pos;
@@ -69,9 +47,9 @@ public class OuttakeArm extends LinearOpMode {
     // initialize
     public void initialize(HardwareMap hardwareMap) {
         // getting from hardware map
-        motor = hardwareMap.get(DcMotorEx.class, "arm");
+        motor = hardwareMap.get(DcMotorEx.class, "extend");
         // setting direction
-        motor.setDirection(DcMotorEx.Direction.REVERSE);
+        motor.setDirection(DcMotorEx.Direction.FORWARD);
         // setting zero power behavior to brake
         motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         // stop and reset encoder on the left arm motor
@@ -79,7 +57,7 @@ public class OuttakeArm extends LinearOpMode {
         // running two arm motors without encoder
         motor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
 
-        target = ArmController.Position.HOME.getPos();
+        target = Position.HOME.getPos();
     }
 
     private double CustomPIDControl(double reference, double state) {
@@ -112,16 +90,16 @@ public class OuttakeArm extends LinearOpMode {
     }
 
     // set target pos
-    public void setTargetPosition(ArmController.Position position) {
+    public void setTargetPosition(Position position) {
         target = position.getPos();
     }
 
     // set custom target pos
     public void setTargetCustomPosition(int position) {
-        if (position + 50 > ArmController.Position.LONG.getPos()) {
-            target = ArmController.Position.LONG.getPos();
-        } else if (position - 50 < ArmController.Position.HOME.getPos()) {
-            target = ArmController.Position.HOME.getPos();
+        if (position + 50 > Position.LONG.getPos()) {
+            target = Position.LONG.getPos();
+        } else if (position - 50 < Position.HOME.getPos()) {
+            target = Position.HOME.getPos();
         } else {
             target = position;
         }
@@ -138,7 +116,7 @@ public class OuttakeArm extends LinearOpMode {
         // running two arm motors without encoder
         motor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
 
-        target = ArmController.Position.HOME.getPos();
+        target = Position.HOME.getPos();
     }
 
     // periodic
@@ -150,7 +128,7 @@ public class OuttakeArm extends LinearOpMode {
     }
 
     // actions
-    public Action moveToPositionAction(ArmController.Position position) {
+    public Action moveToPositionAction(Position position) {
         return new Action() {
             private boolean initialized = false;
 
@@ -176,8 +154,8 @@ public class OuttakeArm extends LinearOpMode {
 
     // logs for debugging
     public void showLogs(Telemetry telemetry) {
-        telemetry.addData("Arm Power", motor.getPower());
-        telemetry.addData("Arm Position", motor.getCurrentPosition());
-        telemetry.addData("Arm Target", target);
+        telemetry.addData("extend Power", motor.getPower());
+        telemetry.addData("extend Position", motor.getCurrentPosition());
+        telemetry.addData("extend Target", target);
     }
 }

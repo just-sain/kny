@@ -5,10 +5,11 @@ import androidx.annotation.NonNull;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
+import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -18,20 +19,20 @@ public class ArmController {
     // motors
     private DcMotorEx motor;
     // k of pid
-    private double integralSum = 0;
-    public static double kP = 0.006, kI = 0.0000003, kD = 0.00000005;
-    // needed
-    public static double target = Position.HOME.getPos();
-    private ElapsedTime timer = new ElapsedTime();
-    private double lastError = 0;
-    // is manual or pid mode
-    private boolean isManMode = false;
+    public static double kP = 0.03, kI = 0.0007, kD = 0.00075, kF = 0.175;
+    // target
+    public static int target = 0;
+    // ticks in degree
+    private final double ticks_in_degree = 537.7 / 180.0;
+    // pid controller
+    private PIDController controller;
 
     // arm positions
     public enum Position {
         HOME(0),
-        MIDDLE(900),
-        LONG(1500);
+        FORWARD(90),
+        BASKET(230),
+        BACKWARD(350);
 
         Position(int pos) {
             this.position = pos;
@@ -57,52 +58,14 @@ public class ArmController {
         // running two arm motors without encoder
         motor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
 
-        target = Position.HOME.getPos();
-    }
+        target = ArmController.Position.HOME.getPos();
 
-    private double CustomPIDControl(double reference, double state) {
-        double error = reference - state;
-        integralSum += error * timer.seconds();
-        double derivative = (error - lastError) / timer.seconds();
-        lastError = error;
-
-        timer.reset();
-
-        return (error * kP) + (derivative * kD) + (integralSum * kI);
-    }
-
-    // manual mode
-    public void setPower(double power) {
-        motor.setPower(power);
-
-        isManMode = true;
-    }
-
-    // set target to current position
-    public void setTargetToCurrentPos() {
-        target = motor.getCurrentPosition();
-        isManMode = false;
-    }
-
-    // mode handles
-    public boolean getIsManMode() {
-        return isManMode;
+        controller = new PIDController(kP, kI, kD);
     }
 
     // set target pos
-    public void setTargetPosition(Position position) {
+    public void setTargetPosition(ArmController.Position position) {
         target = position.getPos();
-    }
-
-    // set custom target pos
-    public void setTargetCustomPosition(int position) {
-        if (position + 50 > Position.LONG.getPos()) {
-            target = Position.LONG.getPos();
-        } else if (position - 50 < Position.HOME.getPos()) {
-            target = Position.HOME.getPos();
-        } else {
-            target = position;
-        }
     }
 
     // get current position
@@ -116,46 +79,25 @@ public class ArmController {
         // running two arm motors without encoder
         motor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
 
-        target = Position.HOME.getPos();
+        target = ArmController.Position.HOME.getPos();
     }
 
     // periodic
     public void periodic() {
-        isManMode = false;
+        controller.setPID(kP, kI, kD);
+        int armPos = motor.getCurrentPosition();
+        double pid = controller.calculate(armPos, target);
+        double ff = Math.cos(Math.toRadians(target / ticks_in_degree)) * kF;
 
-        double power = CustomPIDControl(target, motor.getCurrentPosition());
+        double power = pid + ff;
+
         motor.setPower(power);
-    }
-
-    // actions
-    public Action moveToPositionAction(Position position) {
-        return new Action() {
-            private boolean initialized = false;
-
-            @Override
-            public boolean run(@NonNull TelemetryPacket packet) {
-                if (!initialized) {
-                    target = position.getPos();
-                    initialized = true;
-                }
-
-                double power = CustomPIDControl(target, motor.getCurrentPosition());
-                motor.setPower(power);
-
-                double currentPosition = motor.getCurrentPosition();
-                packet.put("Arm Position", currentPosition);
-                packet.put("Arm Target", target);
-
-                // Return true if the arm has not yet reached the target
-                return Math.abs(target - currentPosition) > 10;
-            }
-        };
     }
 
     // logs for debugging
     public void showLogs(Telemetry telemetry) {
-        telemetry.addData("Arm Power", motor.getPower());
-        telemetry.addData("Arm Position", motor.getCurrentPosition());
-        telemetry.addData("Arm Target", target);
+        telemetry.addData("arm Power", motor.getPower());
+        telemetry.addData("arm Position", motor.getCurrentPosition());
+        telemetry.addData("arm Target", target);
     }
 }

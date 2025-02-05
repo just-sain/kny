@@ -7,6 +7,7 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -14,31 +15,59 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 @Config
 public class LiftController {
-    private DcMotorEx lift;
+    private DcMotorEx left, right;
     // k of pid
     private double integralSum = 0;
     public static double kP = 0.012, kI = 0.00000002, kD = 0.000005;
     // needed
-    public static double target = Params.LiftParams.Position.HOME.getPos();
+    public static double target = Position.HOME.getPos();
     private ElapsedTime timer = new ElapsedTime();
     private double lastError = 0;
     // is manual or pid mode
     private boolean isManMode = false;
 
+    public enum Position {
+        // home
+        HOME(0),
+        // chamber hit
+        HIT(300),
+        // chamber
+        CHAMBER(400),
+        // basket
+        BASKET(1800),
+        // max
+        MAX(3100);
+
+        Position(int pos) {
+            this.position = pos;
+        }
+
+        private int position;
+
+        public int getPos() {
+            return position;
+        }
+    }
+
     // initialized
     public void initialize(HardwareMap hardwareMap) {
-        lift = hardwareMap.get(DcMotorEx.class, "lift");
+        left = hardwareMap.get(DcMotorEx.class, "l-lift");
+        right = hardwareMap.get(DcMotorEx.class, "r-lift");
+
 
         // motor directions
-        lift.setDirection(DcMotorEx.Direction.FORWARD);
+        left.setDirection(DcMotorEx.Direction.FORWARD);
+        right.setDirection(DcMotorEx.Direction.REVERSE);
         // zero power behavior
-        lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         // mode
-        lift.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        lift.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+        left.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        left.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+        right.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
 
         // default target position;
-        target = Params.LiftParams.Position.HOME.getPos();
+        target = Position.HOME.getPos();
     }
 
     // custom pid controller
@@ -55,14 +84,15 @@ public class LiftController {
 
     // manual mode
     public void setPower(double power) {
-        lift.setPower(power);
+        left.setPower(power);
+        right.setPower(power);
 
         isManMode = true;
     }
 
     // set target to current position
     public void setTargetToCurrentPos() {
-        target = lift.getCurrentPosition();
+        target = left.getCurrentPosition();
         isManMode = false;
     }
 
@@ -72,22 +102,22 @@ public class LiftController {
     }
 
     // set target
-    public void setTargetPosition(Params.LiftParams.Position position) {
+    public void setTargetPosition(Position position) {
         target = position.getPos();
     }
 
     // get current position
     public int getCurrentPosition() {
-        return lift.getCurrentPosition();
+        return left.getCurrentPosition();
     }
 
     // reset encoders
     public void resetEncoders() {
-        lift.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        left.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
         // running two lift motors without encoder
-        lift.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+        left.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
 
-        target = Params.LiftParams.Position.HOME.getPos();
+        target = Position.HOME.getPos();
     }
 
     public Action resetEncodersAction() {
@@ -105,13 +135,14 @@ public class LiftController {
     public void periodic() {
         isManMode = false;
 
-        double power = CustomPIDControl(target, lift.getCurrentPosition());
-        lift.setPower(power);
+        double power = CustomPIDControl(target, left.getCurrentPosition());
+        left.setPower(power);
+        right.setPower(power);
     }
 
     // lift actions
     // do not use!!!
-    public Action moveToPosition(Params.LiftParams.Position position) {
+    public Action moveToPosition(Position position) {
         // move to positions by pid
         return new Action() {
             private boolean initialized = false;
@@ -121,10 +152,11 @@ public class LiftController {
                 target = position.getPos();
                 initialized = true;
 
-                double power = CustomPIDControl(target, lift.getCurrentPosition());
-                lift.setPower(power);
+                double power = CustomPIDControl(target, left.getCurrentPosition());
+                left.setPower(power);
+                right.setPower(power);
 
-                double currentPosition = lift.getCurrentPosition();
+                double currentPosition = left.getCurrentPosition();
                 packet.put("Lift Position", currentPosition);
                 packet.put("Lift Target", target);
 
@@ -133,7 +165,7 @@ public class LiftController {
         };
     }
 
-    public Action setTargetPositionAction(Params.LiftParams.Position position) {
+    public Action setTargetPositionAction(Position position) {
         return new Action() {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
@@ -146,8 +178,8 @@ public class LiftController {
 
     // logs for telemetry
     public void showLogs(Telemetry telemetry) {
-        telemetry.addData("lift power", lift.getPower());
-        telemetry.addData("lift pos", lift.getCurrentPosition());
+        telemetry.addData("lift power", left.getPower());
+        telemetry.addData("lift pos", left.getCurrentPosition());
         telemetry.addData("lift target", target);
     }
 }

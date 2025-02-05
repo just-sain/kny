@@ -1,33 +1,40 @@
 package org.firstinspires.ftc.teamcode.modes;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.controllers.ArmController;
 import org.firstinspires.ftc.teamcode.controllers.BaseController;
+import org.firstinspires.ftc.teamcode.controllers.ExtendController;
 import org.firstinspires.ftc.teamcode.controllers.LiftController;
-import org.firstinspires.ftc.teamcode.controllers.OArmController;
 import org.firstinspires.ftc.teamcode.controllers.OuttakeController;
 
 
 // kiroshi it's not yaku KNY
-@TeleOp(name = "Kny teleop", group = "")
+@TeleOp(name = "Kny teleop", group = "modes")
 public class KnyTeleop extends LinearOpMode {
 
     BaseController baseController = new BaseController();
-    ArmController armController = new ArmController();
-    OArmController oArmController = new OArmController();
+    ExtendController extendController = new ExtendController();
+
     LiftController liftController = new LiftController();
+    ArmController armController = new ArmController();
     OuttakeController outtakeController = new OuttakeController();
 
     @Override
     public void runOpMode() {
 
         baseController.initialize(hardwareMap);
-        armController.initialize(hardwareMap);
-        oArmController.initialize(hardwareMap);
+        extendController.initialize(hardwareMap);
+
         liftController.initialize(hardwareMap);
+        armController.initialize(hardwareMap);
         outtakeController.initialize(hardwareMap);
+
+        // ftc dashboard debug
+//        MultipleTelemetry telemetry = new MultipleTelemetry(FtcDashboard.getInstance().getTelemetry());
 
 
         waitForStart();
@@ -42,60 +49,21 @@ public class KnyTeleop extends LinearOpMode {
                     gamepad1.left_stick_x
             );
 
-            // -- arm pid --
-            if (gamepad1.a) {
-                // home pos
-                armController.setTargetPosition(ArmController.Position.HOME);
-            } else if (gamepad1.b) {
-                // middle
-                armController.setTargetPosition(ArmController.Position.MIDDLE);
-            } else if (gamepad1.y) {
-                // long
-                armController.setTargetPosition(ArmController.Position.LONG);
-            }
-
-            // -- arm pid mode switch --
-            if (gamepad1.left_trigger > 0.05) {
-                // man mode - down
-                armController.setPower(-gamepad1.left_trigger);
-            }
-            if (gamepad1.right_trigger > 0.05) {
-                // man mode - up
-                armController.setPower(gamepad1.right_trigger);
-            } else {
-                if (armController.getIsManMode()) {
-                    armController.setTargetToCurrentPos();
-                } else {
-                    armController.periodic();
-                }
-            }
-
-            // -- resetting arm encoders, just in case --
-            if (gamepad1.right_stick_button) {
-                armController.resetEncoders();
-            }
-
-            // --- o arm ---
-            oArmController.periodic();
-
             // --- lift ---
             // -- lift setting target position --
-//            if (gamepad2.dpad_down) {
-//                // take specimen
-//                liftController.setTargetPosition(Params.LiftParams.Position.HOME);
-//                outtakeController.setHandHorizontal();
-//
-//            } else if (gamepad2.dpad_up) {
-//                // high chamber
-//                liftController.setTargetPosition(Params.LiftParams.Position.HIT);
-//                outtakeController.setHandHit();
-//
-//            } else if (gamepad2.dpad_right) {
-//                liftController.setTargetPosition(Params.LiftParams.Position.CHAMBER);
-//                outtakeController.setHandHorizontal();
-//            } else if (gamepad2.dpad_left) {
-//                outtakeController.setHandHide();
-//            }
+            if (gamepad2.dpad_down) {
+                // take specimen
+                liftController.setTargetPosition(LiftController.Position.HOME);
+            } else if (gamepad2.dpad_up) {
+                // hit high chamber
+                liftController.setTargetPosition(LiftController.Position.HIT);
+            } else if (gamepad2.dpad_right) {
+                // chamber - push
+                liftController.setTargetPosition(LiftController.Position.CHAMBER);
+            } else if (gamepad2.dpad_left) {
+                // high basket
+                liftController.setTargetPosition(LiftController.Position.BASKET);
+            }
 
             // -- lift pid mode switch --
             if (gamepad2.left_trigger > 0.05) {
@@ -129,17 +97,35 @@ public class KnyTeleop extends LinearOpMode {
                 outtakeController.setClawClose();
             }
 
+            // --- arm ---
+            // -- arm --
+            if (gamepad1.dpad_left) {
+                armController.setTargetPosition(ArmController.Position.BACKWARD);
+            } else if (gamepad1.dpad_right) {
+                armController.setTargetPosition(ArmController.Position.FORWARD);
+                outtakeController.setWristHorizontal();
+            } else if (gamepad1.dpad_up) {
+                armController.setTargetPosition(ArmController.Position.BASKET);
+            }
+
+            // -- arm periodic --
+            armController.periodic();
+
             // --- end of keymap of robot ---
 
             // --- telemetry ---
             telemetry.addLine("--- BASE ---");
             baseController.showTelemetry(telemetry);
-            telemetry.addLine("--- ARM ---");
-            armController.showLogs(telemetry);
-            telemetry.addLine("--- OUTTAKE ARM ---");
-            oArmController.showLogs(telemetry);
+
+            telemetry.addLine("--- EXTEND ---");
+            extendController.showLogs(telemetry);
+
             telemetry.addLine("--- LIFT ---");
             liftController.showLogs(telemetry);
+
+            telemetry.addLine("--- ARM ---");
+            armController.showLogs(telemetry);
+
             telemetry.addLine("--- OUTTAKE ---");
             outtakeController.showLogs(telemetry);
 

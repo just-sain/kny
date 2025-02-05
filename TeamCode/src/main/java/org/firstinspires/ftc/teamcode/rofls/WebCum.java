@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.controllers.ArmController;
+import org.firstinspires.ftc.teamcode.controllers.ExtendController;
 import org.firstinspires.ftc.teamcode.controllers.IntakeController;
 import org.firstinspires.ftc.teamcode.controllers.VisionController;
 
@@ -19,7 +20,7 @@ import java.util.TimerTask;
 public class WebCum extends LinearOpMode {
 
     VisionController visionController = new VisionController();
-    ArmController armController       = new ArmController();
+    ExtendController extendController = new ExtendController();
     IntakeController intakeController = new IntakeController();
 
     MultipleTelemetry multipleTelemetry;
@@ -36,7 +37,7 @@ public class WebCum extends LinearOpMode {
     @Override
     public void runOpMode() {
         visionController.initialize(hardwareMap, blueAlliance);
-        armController.initialize(hardwareMap);
+        extendController.initialize(hardwareMap);
         intakeController.initialize(hardwareMap);
 
         MultipleTelemetry multipleTelemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
@@ -66,7 +67,7 @@ public class WebCum extends LinearOpMode {
                 if (blobInfo != null && blobInfo.deltaX <= 30) {
                     // if y going fuck do nothing
                     if (blobInfo.deltaY >= -30 && blobInfo.deltaY <= 75) {
-                        armController.setTargetCustomPosition(armController.getCurrentPosition());
+                        extendController.setTargetCustomPosition(extendController.getCurrentPosition());
 
                         new Timer().schedule(new TimerTask() {
                             @Override
@@ -78,7 +79,7 @@ public class WebCum extends LinearOpMode {
                     }
                 } else {
                     // if no sample or low x pos go arm forward
-                    armConfigure(true);
+                    extendController(true);
                 }
             }
 
@@ -127,7 +128,7 @@ public class WebCum extends LinearOpMode {
                 reset();
             }
 
-            armController.periodic();
+            extendController.periodic();
             intakeController.showLogs(telemetry);
 
             telemetry.update();
@@ -135,17 +136,17 @@ public class WebCum extends LinearOpMode {
     }
 
     public void reset() {
-        armController.setTargetPosition(ArmController.Position.HOME);
+        extendController.setTargetPosition(ExtendController.Position.HOME);
         intakeController.setWristDetect();
         intakeController.setClawOpen();
         intakeController.setHandNeutral();
     }
 
-    public void armConfigure(boolean forward) {
+    public void extendController(boolean forward) {
         if (forward) {
-            armController.setTargetCustomPosition(armController.getCurrentPosition() + 100);
+            extendController.setTargetCustomPosition(extendController.getCurrentPosition() + 100);
         } else {
-            armController.setTargetCustomPosition(armController.getCurrentPosition() - 50);
+            extendController.setTargetCustomPosition(extendController.getCurrentPosition() - 50);
         }
     }
 
