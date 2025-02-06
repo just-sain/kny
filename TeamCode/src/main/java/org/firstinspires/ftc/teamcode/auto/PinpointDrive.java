@@ -32,7 +32,6 @@ public class PinpointDrive extends MecanumDrive {
 
     // custom
     private LiftController liftController = null;
-    private ArmController armController = null;
 
     public static class Params {
         /*
@@ -129,7 +128,6 @@ public class PinpointDrive extends MecanumDrive {
 
         // custom
         this.liftController = liftController;
-        this.armController = armController;
 
         FlightRecorder.write("PINPOINT_PARAMS",PARAMS);
         pinpoint = hardwareMap.get(GoBildaPinpointDriverRR.class,PARAMS.pinpointDeviceName);
@@ -186,7 +184,6 @@ public class PinpointDrive extends MecanumDrive {
         // custom
         if (liftController != null) {
             liftController.periodic();
-            armController.periodic();
         }
 
         // RR standard

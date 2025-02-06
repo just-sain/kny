@@ -21,16 +21,14 @@ public class RoflArm extends LinearOpMode {
 
         while(opModeIsActive()) {
             if (gamepad1.a) {
-                armController.setTargetPosition(ArmController.Position.HOME);
+                armController.setHome();
             } else if (gamepad1.b) {
-                armController.setTargetPosition(ArmController.Position.BACKWARD);
+                armController.setForward();
             } else if (gamepad1.y) {
-                armController.setTargetPosition(ArmController.Position.BASKET);
+                armController.setForward();
             } else if (gamepad1.x) {
-                armController.setTargetPosition(ArmController.Position.FORWARD);
+                armController.setBasket();
             }
-
-            armController.periodic();
 
             armController.showLogs(telemetry);
 

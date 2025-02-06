@@ -25,13 +25,13 @@ public class RoflOuttake extends LinearOpMode {
         while(opModeIsActive()) {
             if (gamepad1.b) {
                 outtakeController.setHandBackward();
-                outtakeController.setWristHorizontal();
+                outtakeController.setWristBackward();
             } else if (gamepad1.y) {
                 outtakeController.setHandForward();
                 outtakeController.setWristHit();
             } else if (gamepad1.x) {
                 outtakeController.setHandForward();
-                outtakeController.setWristHorizontal();
+                outtakeController.setWristForward();
             }
 
             if (gamepad1.left_bumper) {

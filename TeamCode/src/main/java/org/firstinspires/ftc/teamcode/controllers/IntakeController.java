@@ -71,15 +71,15 @@ public class IntakeController {
     }
 
     // wrist actions
-    public Action setWristTakeAction() {
-        return new Action() {
-            @Override
-            public boolean run(@NonNull TelemetryPacket packet) {
-                wrist.setPosition(WRIST_TAKE_POS);
-                return false;
-            }
-        };
-    }
+        public Action setWristTakeAction() {
+            return new Action() {
+                @Override
+                public boolean run(@NonNull TelemetryPacket packet) {
+                    wrist.setPosition(WRIST_TAKE_POS);
+                    return false;
+                }
+            };
+        }
     public Action setWristUpAction() {
         return new Action() {
             @Override

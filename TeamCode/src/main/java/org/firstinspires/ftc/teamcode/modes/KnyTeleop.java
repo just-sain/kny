@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.modes;
 
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -100,16 +98,16 @@ public class KnyTeleop extends LinearOpMode {
             // --- arm ---
             // -- arm --
             if (gamepad1.dpad_left) {
-                armController.setTargetPosition(ArmController.Position.BACKWARD);
-            } else if (gamepad1.dpad_right) {
-                armController.setTargetPosition(ArmController.Position.FORWARD);
-                outtakeController.setWristHorizontal();
+                armController.setBasket();
             } else if (gamepad1.dpad_up) {
-                armController.setTargetPosition(ArmController.Position.BASKET);
+                armController.setForward();
+                outtakeController.setWristForward();
+            } else if (gamepad1.dpad_down) {
+                armController.setBackward();
+            } else if (gamepad1.dpad_right) {
+                armController.setHome();
             }
 
-            // -- arm periodic --
-            armController.periodic();
 
             // --- end of keymap of robot ---
 

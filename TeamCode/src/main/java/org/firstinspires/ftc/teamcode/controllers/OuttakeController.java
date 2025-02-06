@@ -15,20 +15,21 @@ public class OuttakeController {
     // wrist
     private Servo wrist;
     // wrist positions
-    public static double WRIST_HORIZONTAL_POS   = 0;
-    public static double WRIST_HIT_POS          = 0.5;
+    public static double WRIST_FORWARD_POS  = 0.5;
+    public static double WRIST_HIT_POS      = 0.95;
+    public static double WRIST_BACKWARD_POS = 0.8;
 
     // hand
     private Servo hand;
     // hand positions
-    public static double HAND_FORWARD_POS  = 0.15;
-    public static double HAND_BACKWARD_POS = 0.9;
+    public static double HAND_FORWARD_POS  = 0.87;
+    public static double HAND_BACKWARD_POS = 0.18;
 
     // claw
     private Servo claw;
     // claw positions
-    public static double CLAW_OPEN_POS = 0.38;
-    public static double CLAW_CLOSE_POS = 0.725;
+    public static double CLAW_OPEN_POS = 0.2;
+    public static double CLAW_CLOSE_POS = 0.47;
 
     // initialize
     public void initialize(HardwareMap hardwareMap) {
@@ -36,7 +37,7 @@ public class OuttakeController {
         wrist = hardwareMap.get(Servo.class, "o-wrist");
         wrist.setDirection(Servo.Direction.REVERSE);
         wrist.scaleRange(0, 1);
-        wrist.setPosition(WRIST_HORIZONTAL_POS);
+        wrist.setPosition(WRIST_HIT_POS);
 
         // hand
         hand = hardwareMap.get(Servo.class, "o-hand");
@@ -56,8 +57,11 @@ public class OuttakeController {
     public void setWristHit() {
         wrist.setPosition(WRIST_HIT_POS);
     }
-    public void setWristHorizontal() {
-        wrist.setPosition(WRIST_HORIZONTAL_POS);
+    public void setWristForward() {
+        wrist.setPosition(WRIST_FORWARD_POS);
+    }
+    public void setWristBackward() {
+        wrist.setPosition(WRIST_BACKWARD_POS);
     }
 
     // hand handles
