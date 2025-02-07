@@ -29,12 +29,12 @@ public class LiftController {
     public enum Position {
         // home
         HOME(0),
-        // chamber hit
-        HIT(300),
-        // chamber
-        CHAMBER(400),
+        // cybugs
+        CYBUGS(345),
+        // CYLIIS
+        CYLIIS(1150),
         // basket
-        BASKET(1800),
+        BASKET(1750),
         // max
         MAX(3100);
 

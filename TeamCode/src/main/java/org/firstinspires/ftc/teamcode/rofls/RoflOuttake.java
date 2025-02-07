@@ -6,7 +6,6 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.controllers.ArmController;
 import org.firstinspires.ftc.teamcode.controllers.OuttakeController;
 
 @Config
@@ -25,13 +24,13 @@ public class RoflOuttake extends LinearOpMode {
         while(opModeIsActive()) {
             if (gamepad1.b) {
                 outtakeController.setHandBackward();
-                outtakeController.setWristBackward();
+                outtakeController.setWristTake();
             } else if (gamepad1.y) {
                 outtakeController.setHandForward();
-                outtakeController.setWristHit();
+                outtakeController.setWristCybugs();
             } else if (gamepad1.x) {
                 outtakeController.setHandForward();
-                outtakeController.setWristForward();
+                outtakeController.setWristCyliis();
             }
 
             if (gamepad1.left_bumper) {

@@ -14,25 +14,25 @@ public class IntakeController {
     // wrist
     private Servo wrist;
     // wrist positions
-    public static double WRIST_HOME_POS   = 0;
+    public static double WRIST_HOME_POS   = 0.05;
     public static double WRIST_DETECT_POS = 0.2;
-    public static double WRIST_UP_POS     = 0.5;
-    public static double WRIST_TAKE_POS   = 0.885;
+    public static double WRIST_UP_POS     = 0.3;
+    public static double WRIST_TAKE_POS   = 0.75;
 
     // hand
     private Servo hand;
     // hand positions
     public static double HAND_MIN_POS          = 0;
     public static double HAND_MIN_DIAGONAL_POS = 0.5;
-    public static double HAND_NEUTRAL_POS      = 0.7;
+    public static double HAND_NEUTRAL_POS      = 0.2;
     public static double HAND_MAX_DIAGONAL_POS = 0.9;
-    public static double HAND_MAX_POS          = 1;
+    public static double HAND_MAX_POS          = 0.55;
 
     // claw
     private Servo claw;
     // claw positions
-    public static double CLAW_OPEN_POS = 0.38;
-    public static double CLAW_CLOSE_POS = 0.725 ;
+    public static double CLAW_OPEN_POS = 0.28;
+    public static double CLAW_CLOSE_POS = 0.59;
 
     // initialize
     public void initialize(HardwareMap hardwareMap) {

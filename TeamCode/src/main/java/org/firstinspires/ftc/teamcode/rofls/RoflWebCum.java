@@ -16,8 +16,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 @Config
-@TeleOp(name = "web cum", group = "rofls")
-public class WebCum extends LinearOpMode {
+@TeleOp(name = "rofl web cum", group = "rofls")
+public class RoflWebCum extends LinearOpMode {
 
     VisionController visionController = new VisionController();
     ExtendController extendController = new ExtendController();

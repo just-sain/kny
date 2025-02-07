@@ -15,21 +15,23 @@ public class OuttakeController {
     // wrist
     private Servo wrist;
     // wrist positions
-    public static double WRIST_FORWARD_POS  = 0.5;
-    public static double WRIST_HIT_POS      = 0.95;
-    public static double WRIST_BACKWARD_POS = 0.8;
+    public static double WRIST_CYLIIS_POS = 0.92;
+    public static double WRIST_CYBUGS_POS = 0.3;
+    public static double WRIST_TAKE_POS   = 0.7;
+    public static double WRIST_PASS_POS   = 0.8;
+    public static double WRIST_BASKET_POS = 0.55;
 
     // hand
     private Servo hand;
     // hand positions
     public static double HAND_FORWARD_POS  = 0.87;
-    public static double HAND_BACKWARD_POS = 0.18;
+    public static double HAND_BACKWARD_POS = 0.20;
 
     // claw
     private Servo claw;
     // claw positions
-    public static double CLAW_OPEN_POS = 0.2;
-    public static double CLAW_CLOSE_POS = 0.47;
+    public static double CLAW_OPEN_POS = 0.5;
+    public static double CLAW_CLOSE_POS = 0.8;
 
     // initialize
     public void initialize(HardwareMap hardwareMap) {
@@ -37,7 +39,7 @@ public class OuttakeController {
         wrist = hardwareMap.get(Servo.class, "o-wrist");
         wrist.setDirection(Servo.Direction.REVERSE);
         wrist.scaleRange(0, 1);
-        wrist.setPosition(WRIST_HIT_POS);
+        wrist.setPosition(WRIST_CYBUGS_POS);
 
         // hand
         hand = hardwareMap.get(Servo.class, "o-hand");
@@ -54,14 +56,20 @@ public class OuttakeController {
 
     // wrist
     // wrist handles
-    public void setWristHit() {
-        wrist.setPosition(WRIST_HIT_POS);
+    public void setWristCybugs() {
+        wrist.setPosition(WRIST_CYBUGS_POS);
     }
-    public void setWristForward() {
-        wrist.setPosition(WRIST_FORWARD_POS);
+    public void setWristCyliis() {
+        wrist.setPosition(WRIST_CYLIIS_POS);
     }
-    public void setWristBackward() {
-        wrist.setPosition(WRIST_BACKWARD_POS);
+    public void setWristTake() {
+        wrist.setPosition(WRIST_TAKE_POS);
+    }
+    public void setWristPass() {
+        wrist.setPosition(WRIST_PASS_POS);
+    }
+    public void setWristBasket() {
+        wrist.setPosition(WRIST_BASKET_POS);
     }
 
     // hand handles
@@ -104,7 +112,8 @@ public class OuttakeController {
 
     // logs for debugging
     public void showLogs(Telemetry telemetry) {
-        telemetry.addData("wrist Position", wrist.getPosition());
-        telemetry.addData("claw Position", claw.getPosition());
+        telemetry.addData("o wrist Position", wrist.getPosition());
+        telemetry.addData("o hand Position", hand.getPosition());
+        telemetry.addData("o claw Position", claw.getPosition());
     }
 }

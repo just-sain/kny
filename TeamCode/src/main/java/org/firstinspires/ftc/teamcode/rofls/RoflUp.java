@@ -26,19 +26,25 @@ public class RoflUp extends LinearOpMode {
 
         while(opModeIsActive()) {
             if (gamepad1.b) {
-                // backward
-                armController.setBackward();
+                // take
+                armController.setTake();
                 outtakeController.setHandBackward();
-                outtakeController.setWristBackward();
+                outtakeController.setWristTake();
             } else if (gamepad1.y) {
-                // hit
-                armController.setHit();
+                // cybugs
+                armController.setChamber();
                 outtakeController.setHandForward();
-                outtakeController.setWristHit();
+                outtakeController.setWristCybugs();
             } else if (gamepad1.x) {
-                armController.setForward();
+                // cyliis
+                armController.setChamber();
                 outtakeController.setHandForward();
-                outtakeController.setWristForward();
+                outtakeController.setWristCyliis();
+            } else if (gamepad1.a) {
+                // basket
+                armController.setBasket();
+                outtakeController.setWristTake();
+                outtakeController.setHandForward();
             }
 
             if (gamepad1.left_bumper) {
@@ -48,6 +54,7 @@ public class RoflUp extends LinearOpMode {
             }
 
 
+            // telemetry
             outtakeController.showLogs(telemetry);
 
             telemetry.update();
