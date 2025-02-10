@@ -17,7 +17,7 @@ public class RoflOuttake extends LinearOpMode {
     public void runOpMode() {
 
         MultipleTelemetry telemetry = new MultipleTelemetry(FtcDashboard.getInstance().getTelemetry());
-        outtakeController.initialize(hardwareMap);
+        outtakeController.initialize(hardwareMap, false);
 
         waitForStart();
 

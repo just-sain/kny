@@ -30,6 +30,7 @@ public class ExtendController {
     // arm positions
     public enum Position {
         HOME(0),
+        PASS(100),
         MIDDLE(900),
         LONG(1500);
 

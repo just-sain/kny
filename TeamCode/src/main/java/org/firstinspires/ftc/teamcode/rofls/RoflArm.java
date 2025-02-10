@@ -15,7 +15,7 @@ public class RoflArm extends LinearOpMode {
     public void runOpMode() {
 
         MultipleTelemetry telemetry = new MultipleTelemetry(FtcDashboard.getInstance().getTelemetry());
-        armController.initialize(hardwareMap);
+        armController.initialize(hardwareMap, false);
 
         waitForStart();
 

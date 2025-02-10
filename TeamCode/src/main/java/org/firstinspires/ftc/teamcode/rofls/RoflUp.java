@@ -19,8 +19,8 @@ public class RoflUp extends LinearOpMode {
     public void runOpMode() {
 
         MultipleTelemetry telemetry = new MultipleTelemetry(FtcDashboard.getInstance().getTelemetry());
-        outtakeController.initialize(hardwareMap);
-        armController.initialize(hardwareMap);
+        outtakeController.initialize(hardwareMap, false);
+        armController.initialize(hardwareMap, false);
 
         waitForStart();
 
@@ -38,12 +38,12 @@ public class RoflUp extends LinearOpMode {
             } else if (gamepad1.x) {
                 // cyliis
                 armController.setChamber();
-                outtakeController.setHandForward();
+                outtakeController.setHandBackward();
                 outtakeController.setWristCyliis();
             } else if (gamepad1.a) {
                 // basket
                 armController.setBasket();
-                outtakeController.setWristTake();
+                outtakeController.setWristBasket();
                 outtakeController.setHandForward();
             }
 

@@ -30,11 +30,14 @@ public class LiftController {
         // home
         HOME(0),
         // cybugs
-        CYBUGS(345),
+        CYBUGS(450),
+        CYBUGS1(490),
         // CYLIIS
-        CYLIIS(1150),
+        CYLIIS(1140),
         // basket
         BASKET(1750),
+        // pass
+        PASS(300),
         // max
         MAX(3100);
 
