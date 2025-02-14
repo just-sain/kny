@@ -38,9 +38,9 @@ public class AutoRoutine extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         // controllers
-        outtakeController.initialize(hardwareMap, false);
+        outtakeController.initialize(hardwareMap);
         liftController.initialize(hardwareMap);
-        armController.initialize(hardwareMap, false);
+        armController.initialize(hardwareMap);
         extendController.initialize(hardwareMap);
         intakeController.initialize(hardwareMap);
 
@@ -52,121 +52,143 @@ public class AutoRoutine extends LinearOpMode {
         PinpointDrive drive = new PinpointDrive(hardwareMap, initialPose, liftController, armController);
 
         // push robot
-        Vector2d submarineFirst = new Vector2d(23.8, 0);
-        Vector2d fromSubmarine = new Vector2d(14, -21);
+//        Vector2d submarineFirst = new Vector2d(23.8, 0);
+//        Vector2d fromSubmarine = new Vector2d(14, -21);
 
         // strafe
-        Vector2d forwardSampleTwo = new Vector2d(46, -38);
+        Vector2d forwardSampleTwo = new Vector2d(42, -20);
 
         // push three samples
-        Vector2d strafeSampleTwo = new Vector2d(47, -40);
-        Vector2d backSampleTwo = new Vector2d(18, -40);
-        Vector2d forwardTheeSample  = new Vector2d(46.5, -28);
-        Vector2d strafeTheeSample  = new Vector2d(46.5, -46);
-        Vector2d backTheeSample  = new Vector2d(18, -46);
-        Vector2d forwardForthSample  = new Vector2d(45.5, -45);
-        Vector2d strafeForthSample  = new Vector2d(45.5, -55);
-        Vector2d backForthSample  = new Vector2d(18, -55);
+        Vector2d strafeSampleTwo = new Vector2d(42, -24);
+        Vector2d backSampleTwo = new Vector2d(19.5, -22);
+        Vector2d forwardTheeSample  = new Vector2d(43, -19);
+        Vector2d strafeTheeSample  = new Vector2d(43, -33);
+        Vector2d backTheeSample  = new Vector2d(19.5, -33);
+        Vector2d forwardForthSample  = new Vector2d(42, -33);
+        Vector2d strafeForthSample  = new Vector2d(42, -41.8);
+        Vector2d backForthSample  = new Vector2d(19, -41.8);
 
         // chamber sample
-        Vector2d humanPlayerSecondSample = new Vector2d(0, -40);
-        Vector2d chamberSecond = new Vector2d(27.8, 6);
+        Vector2d humanPlayerFirstChamber = new Vector2d(2, -20);
+        Vector2d chamberFirst = new Vector2d(33, 26);
 
-        Vector2d humanPlayerThirdSample = new Vector2d(0, -40);
-        Vector2d chamberThird = new Vector2d(27.8, 5);
+        Vector2d humanPlayerSecondChamber = new Vector2d(4, -15);
+        Vector2d chamberSecond = new Vector2d(33, 25);
 
-        Vector2d humanPlayerFourthSample = new Vector2d(-2, -40);
-        Vector2d chamberFourth = new Vector2d(27.9, 2);
+        Vector2d humanPlayerThirdChamber = new Vector2d(4, -15);
+        Vector2d chamberThird = new Vector2d(33, 24);
 
-        Vector2d humanPlayerFifthSample = new Vector2d(0, -40);
-        Vector2d chamberFifth = new Vector2d(27.8, 2);
+        Vector2d humanPlayerFourthChamber = new Vector2d(4, -15);
+        Vector2d chamberFourth = new Vector2d(33, 23);
+
+        Vector2d humanPlayerFifthChamber = new Vector2d(4, -15);
+        Vector2d chamberFifth = new Vector2d(33, 22);
 
         // from chamber
-        Vector2d FromSubmarineThird = new Vector2d(15, 5);
-        Vector2d FromSubmarineFourthSample = new Vector2d(15, 3);
-        Vector2d FromSubmarineFifthSample = new Vector2d(15, 0);
-        Vector2d FromSubmarineParking = new Vector2d(15, -2);
+        Vector2d FromSubmarineFirst = new Vector2d(20, 26);
+        Vector2d FromSubmarineSecond = new Vector2d(20, 25);
+        Vector2d FromSubmarineThird = new Vector2d(20, 24);
+        Vector2d FromSubmarineFourth = new Vector2d(20, 23);
+        Vector2d FromSubmarineFifth = new Vector2d(20, 22);
+
+        // stick
+        Pose2d StickToFirstSample = new Pose2d(14, -38, Math.toRadians(-130));
+        Pose2d StickPushFirstSample = new Pose2d(14, -20, Math.toRadians(-160));
+        Pose2d StickToSampleSecondSample  = new Pose2d(16, -38, Math.toRadians(-130));
+        Pose2d StickPushSecondSample = new Pose2d(16, -20, Math.toRadians(-160));
+        Pose2d StickToThirdSample  = new Pose2d(16, -38, Math.toRadians(-130));
+        Pose2d StickPushThirdSample = new Pose2d(16, -20, Math.toRadians(-160));
 
 
 
 
-        // trajectories
-        TrajectoryActionBuilder SubmarineFirst = drive.actionBuilder(initialPose)
-                .strafeTo(submarineFirst);
 
-        // trajectories push
-        TrajectoryActionBuilder FromTheSubmarine = SubmarineFirst.endTrajectory().fresh()
-                .strafeTo(fromSubmarine, maxVel);
+//        // trajectories
+//        TrajectoryActionBuilder SubmarineFirst = drive.actionBuilder(initialPose)
+//                .strafeTo(submarineFirst);
+//
+//        // trajectories push
+//        TrajectoryActionBuilder FromTheSubmarine = SubmarineFirst.endTrajectory().fresh()
+//                .strafeTo(fromSubmarine, maxVel);
 
-        TrajectoryActionBuilder ToSample = FromTheSubmarine.endTrajectory().fresh()
+        double takeWaitSeconds = 0.3;
+
+        TrajectoryActionBuilder ToSample = drive.actionBuilder(initialPose)
                 .strafeTo(forwardSampleTwo, maxVel)
                 .strafeTo(strafeSampleTwo, maxVel)
                 .strafeTo(backSampleTwo, maxVel)
-                .strafeTo(forwardTheeSample)
+                .strafeTo(forwardTheeSample, maxVel)
                 .strafeTo(strafeTheeSample, maxVel)
                 .strafeTo(backTheeSample, maxVel)
                 .strafeTo(forwardForthSample, maxVel)
                 .strafeTo(strafeForthSample, maxVel)
                 .strafeTo(backForthSample, maxVel);
 
-        TrajectoryActionBuilder ChamberTwo = ToSample.endTrajectory().fresh()
-                .strafeTo(humanPlayerSecondSample, maxVel)
-                .strafeTo(chamberSecond);
+        TrajectoryActionBuilder ChamberFirst = ToSample.endTrajectory().fresh()
+                .strafeTo(humanPlayerFirstChamber, maxVel)
+
+                .afterDisp(0, () -> outtakeController.setClawClose())
+                .waitSeconds(takeWaitSeconds)
+                .afterDisp(0, () -> cyliis())
+
+                .strafeTo(chamberFirst, maxVel);
 
 
-        TrajectoryActionBuilder ChamberThird = ChamberTwo.endTrajectory().fresh()
+        TrajectoryActionBuilder ChamberSecond = ChamberFirst.endTrajectory().fresh()
+                .strafeTo(FromSubmarineFirst, maxVel)
+                .afterDisp(0, () -> takeSpecimen())
+
+                .strafeTo(humanPlayerSecondChamber, maxVel)
+                .afterDisp(0, () -> outtakeController.setClawClose())
+                .waitSeconds(takeWaitSeconds)
+                .afterDisp(0, () -> cyliis())
+
+                .strafeTo(chamberSecond, maxVel);
+
+        // fourth 3
+        TrajectoryActionBuilder ChamberThird = ChamberSecond.endTrajectory().fresh()
+                .strafeTo(FromSubmarineSecond, maxVel)
+                .afterDisp(0, () -> takeSpecimen())
+
+                .strafeTo(humanPlayerThirdChamber, maxVel)
+                .afterDisp(0, () -> outtakeController.setClawClose())
+                .waitSeconds(takeWaitSeconds)
+                .afterDisp(0, () -> cyliis())
+
+                .strafeTo(chamberThird, maxVel);
+
+        // fifth 4
+        TrajectoryActionBuilder ChamberFourth = ChamberThird.endTrajectory().fresh()
                 .strafeTo(FromSubmarineThird, maxVel)
                 .afterDisp(0, () -> takeSpecimen())
-                .strafeTo(humanPlayerThirdSample, maxVel)
-                .afterDisp(0, () -> outtakeController.setClawClose())
-                .waitSeconds(0.3)
-                .afterDisp(0, () -> cybugs())
-                .strafeTo(chamberThird)
-                .afterDisp(0, () -> {
-                    outtakeController.setClawOpen();
-                    liftController.setTargetPosition(LiftController.Position.HOME);
-                });
 
-        // fourth 4
-        TrajectoryActionBuilder ChamberFourth = ChamberThird.endTrajectory().fresh()
-                .strafeTo(FromSubmarineFourthSample, maxVel)
+                .strafeTo(humanPlayerFourthChamber, maxVel)
+                .afterDisp(0, () -> outtakeController.setClawClose())
+                .waitSeconds(takeWaitSeconds)
+                .afterDisp(0, () -> cyliis())
+
+                .strafeTo(chamberFourth, maxVel);
+
+        // fifth 5
+        TrajectoryActionBuilder ChamberFifth = ChamberFourth.endTrajectory().fresh()
+                .strafeTo(FromSubmarineFourth, maxVel)
+
                 .afterDisp(0, () -> takeSpecimen())
-                .strafeTo(humanPlayerFourthSample, maxVel)
+                .strafeTo(humanPlayerFifthChamber, maxVel)
                 .afterDisp(0, () -> outtakeController.setClawClose())
-                .waitSeconds(0.3)
-                .afterDisp(0, () -> cybugs())
-                .strafeTo(chamberFourth)
-                .afterDisp(0, () -> {
-                    outtakeController.setClawOpen();
-                    liftController.setTargetPosition(LiftController.Position.HOME);
-                });
+                .waitSeconds(takeWaitSeconds)
+                .afterDisp(0, () -> cyliis())
 
-//        // fifth 5
-//        TrajectoryActionBuilder ChamberFifth = ChamberFourth.endTrajectory().fresh()
-//                .strafeTo(FromSubmarineFifthSample, maxVel)
-//                .afterDisp(0, () -> takeSpecimen())
-//                .strafeTo(humanPlayerFifthSample, maxVel)
-//                .afterDisp(0, () -> outtakeController.setClawClose())
-//                .waitSeconds(0.3)
-//                .afterDisp(0, () -> cybugs())
-//                .strafeTo(chamberFifth)
-//                .afterDisp(0, () -> {
-//                    outtakeController.setClawOpen();
-//                    liftController.setTargetPosition(LiftController.Position.HOME);
-//                });
-
+                .strafeTo(chamberFifth, maxVel);
 
         // parking
-        TrajectoryActionBuilder Parking = ChamberFourth.endTrajectory().fresh()
-                .strafeTo(FromSubmarineParking)
-                .afterTime(0.3, () -> takeSpecimen())
-                .strafeTo(humanPlayerFifthSample, maxVel);
-
+        TrajectoryActionBuilder Parking = ChamberFifth.endTrajectory().fresh()
+                .strafeTo(FromSubmarineFifth, maxVel)
+                .strafeTo(humanPlayerFifthChamber, maxVel);
 
 
         // lift
         Action liftToBasket = liftController.setTargetPositionAction(LiftController.Position.BASKET);
-        Action liftToCybugs = liftController.setTargetPositionAction(LiftController.Position.CYBUGS);
         Action liftToHome = liftController.setTargetPositionAction(LiftController.Position.HOME);
 
         // wait for start
@@ -175,14 +197,40 @@ public class AutoRoutine extends LinearOpMode {
         // run
         Actions.runBlocking(
                 new SequentialAction(
-                        SubmarineFirst.build(),
+                        ToSample.build(),
 
-                        // pushes
-                        FromTheSubmarine.build(),
-                        ToSample.build()
+                        ChamberFirst.build(),
+                        outtakeController.setClawOpenAction(),
 
+                        ChamberSecond.build(),
+                        outtakeController.setClawOpenAction(),
+
+                        ChamberThird.build(),
+                        outtakeController.setClawOpenAction(),
+
+                        ChamberFourth.build(),
+                        outtakeController.setClawOpenAction(),
+
+                        ChamberFifth.build(),
+                        outtakeController.setClawOpenAction(),
+
+                        Parking.build()
                 )
         );
+    }
+
+    // cyliis
+    public void cyliis() {
+        // cyliis high chamber
+        liftController.setTargetPosition(LiftController.Position.CYLIIS);
+        armController.setChamber();
+    }
+
+    // take
+    public void takeSpecimen() {
+        // take specimen
+        liftController.setTargetPosition(LiftController.Position.HOME);
+        armController.setTake();
     }
 
     // sleep action, sometimes help
@@ -198,67 +246,5 @@ public class AutoRoutine extends LinearOpMode {
                 return false;
             }
         };
-    }
-
-    // take specimen
-    public Action takeSpecimenAction() {
-        return new Action() {
-            @Override
-            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-                liftController.setTargetPosition(LiftController.Position.HOME);
-
-                armController.setTake();
-                outtakeController.setWristTake();
-                outtakeController.setHandBackward();
-                return false;
-            }
-        };
-    }
-
-    // cybugs
-    public Action cybugsAction() {
-        return new Action() {
-            @Override
-            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-                // cybugs high chamber
-                liftController.setTargetPosition(LiftController.Position.CYBUGS);
-
-                armController.setChamber();
-                outtakeController.setWristCybugs();
-                outtakeController.setHandForward();
-
-                return false;
-            }
-        };
-    }
-
-    // cybugs
-    public void cybugs() {
-        // cybugs high chamber
-        liftController.setTargetPosition(LiftController.Position.CYBUGS);
-
-        armController.setChamber();
-        outtakeController.setWristCybugs();
-        outtakeController.setHandForward();
-    }
-
-    // cybugs 1
-    public void cybugs1() {
-        // cybugs high chamber
-        liftController.setTargetPosition(LiftController.Position.CYBUGS1);
-
-        armController.setChamber();
-        outtakeController.setWristCybugs();
-        outtakeController.setHandForward();
-    }
-
-    // take
-    public void takeSpecimen() {
-        // take specimen
-        liftController.setTargetPosition(LiftController.Position.HOME);
-
-        armController.setTake();
-        outtakeController.setWristTake();
-        outtakeController.setHandBackward();
     }
 }

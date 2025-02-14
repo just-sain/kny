@@ -11,14 +11,15 @@ public class ArmController {
     // motors
     private Servo lArm, rArm;
 
-    public static double PASS_POS = 0;
-    public static double CHAMBER_POS = 0.05;
-    public static double TAKE_POS = 0.85;
-    public static double BASKET_POS = 0.6;
+    public static double PASS_POS = 1;
+    public static double CHAMBER_POS = 0.975;
+    public static double BASKET_POS = 0.85;
+    public static double TAKE_POS = 0.09;
+    public static double HOME_POS = 0;
 
 
     // initialize
-    public void initialize(HardwareMap hardwareMap, boolean isAuto) {
+    public void initialize(HardwareMap hardwareMap) {
         // getting from hardware map
         lArm = hardwareMap.get(Servo.class, "l-arm");
         rArm = hardwareMap.get(Servo.class, "r-arm");
@@ -26,13 +27,8 @@ public class ArmController {
         lArm.setDirection(Servo.Direction.FORWARD);
         rArm.setDirection(Servo.Direction.REVERSE);
         // set default pos
-        if (isAuto) {
-            lArm.setPosition(PASS_POS);
-            rArm.setPosition(PASS_POS);
-        } else {
-            lArm.setPosition(TAKE_POS);
-            rArm.setPosition(TAKE_POS);
-        }
+        lArm.setPosition(HOME_POS);
+        rArm.setPosition(HOME_POS);
     }
 
     // position

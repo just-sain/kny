@@ -29,17 +29,16 @@ public class LiftController {
     public enum Position {
         // home
         HOME(0),
-        // cybugs
-        CYBUGS(450),
-        CYBUGS1(490),
+        // TAKE
+        TAKE(0),
         // CYLIIS
-        CYLIIS(1140),
+        CYLIIS(1200),
         // basket
-        BASKET(1750),
+        BASKET(2300),
         // pass
         PASS(300),
         // max
-        MAX(3100);
+        MAX(2500);
 
         Position(int pos) {
             this.position = pos;
@@ -114,6 +113,19 @@ public class LiftController {
         return left.getCurrentPosition();
     }
 
+    // set target position action
+    public Action setTargetPositionAction(Position position) {
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                target = position.getPos();
+
+                return false;
+            }
+        };
+    }
+
+
     // reset encoders
     public void resetEncoders() {
         left.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
@@ -143,41 +155,6 @@ public class LiftController {
         right.setPower(power);
     }
 
-    // lift actions
-    // do not use!!!
-    public Action moveToPosition(Position position) {
-        // move to positions by pid
-        return new Action() {
-            private boolean initialized = false;
-
-            @Override
-            public boolean run(@NonNull TelemetryPacket packet) {
-                target = position.getPos();
-                initialized = true;
-
-                double power = CustomPIDControl(target, left.getCurrentPosition());
-                left.setPower(power);
-                right.setPower(power);
-
-                double currentPosition = left.getCurrentPosition();
-                packet.put("Lift Position", currentPosition);
-                packet.put("Lift Target", target);
-
-                return Math.abs(target - currentPosition) > 15;
-            }
-        };
-    }
-
-    public Action setTargetPositionAction(Position position) {
-        return new Action() {
-            @Override
-            public boolean run(@NonNull TelemetryPacket packet) {
-                target = position.getPos();
-
-                return false;
-            }
-        };
-    }
 
     // logs for telemetry
     public void showLogs(Telemetry telemetry) {

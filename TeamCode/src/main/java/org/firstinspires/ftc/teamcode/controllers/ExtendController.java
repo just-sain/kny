@@ -95,6 +95,18 @@ public class ExtendController {
         target = position.getPos();
     }
 
+    // set target pos action
+    public Action setTargetPositionAction(Position position) {
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                target = position.getPos();
+
+                return false;
+            }
+        };
+    }
+
     // set custom target pos
     public void setTargetCustomPosition(int position) {
         if (position + 50 > Position.LONG.getPos()) {
@@ -126,31 +138,6 @@ public class ExtendController {
 
         double power = CustomPIDControl(target, motor.getCurrentPosition());
         motor.setPower(power);
-    }
-
-    // actions
-    public Action moveToPositionAction(Position position) {
-        return new Action() {
-            private boolean initialized = false;
-
-            @Override
-            public boolean run(@NonNull TelemetryPacket packet) {
-                if (!initialized) {
-                    target = position.getPos();
-                    initialized = true;
-                }
-
-                double power = CustomPIDControl(target, motor.getCurrentPosition());
-                motor.setPower(power);
-
-                double currentPosition = motor.getCurrentPosition();
-                packet.put("Arm Position", currentPosition);
-                packet.put("Arm Target", target);
-
-                // Return true if the arm has not yet reached the target
-                return Math.abs(target - currentPosition) > 10;
-            }
-        };
     }
 
     // logs for debugging

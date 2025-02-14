@@ -8,7 +8,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.controllers.IntakeController;
 
-@Config
 @TeleOp(name = "rofl intake", group = "rofls")
 public class RoflIntake extends LinearOpMode {
 
@@ -28,16 +27,15 @@ public class RoflIntake extends LinearOpMode {
         // run
         while(opModeIsActive()) {
             // wrist
-
-            if (gamepad1.b) {
+            if (gamepad1.a) {
                 intakeController.setWristTake();
-            } else if (gamepad1.y) {
+            } else if (gamepad1.b) {
                 intakeController.setWristUp();
-            } else if (gamepad1.x) {
+            } else if (gamepad1.y) {
                 intakeController.setWristHome();
             }
 
-            // hang
+            // hand
             if (gamepad1.dpad_up) {
                 intakeController.setHandMin();
             } else if (gamepad1.dpad_down) {

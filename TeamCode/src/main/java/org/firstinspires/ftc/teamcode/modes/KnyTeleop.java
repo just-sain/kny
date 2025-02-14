@@ -31,8 +31,8 @@ public class KnyTeleop extends LinearOpMode {
         intakeController.initialize(hardwareMap);
 
         liftController.initialize(hardwareMap);
-        armController.initialize(hardwareMap, false);
-        outtakeController.initialize(hardwareMap, false);
+        armController.initialize(hardwareMap);
+        outtakeController.initialize(hardwareMap);
 
         // ftc dashboard debug
 //        MultipleTelemetry telemetry = new MultipleTelemetry(FtcDashboard.getInstance().getTelemetry());
@@ -55,8 +55,6 @@ public class KnyTeleop extends LinearOpMode {
             if (gamepad2.dpad_down) {
                 takeSpecimen();
             } else if (gamepad2.dpad_up) {
-                cybugs();
-            } else if (gamepad2.dpad_right) {
                 cyliis();
             } else if (gamepad2.dpad_left) {
                 highBasket();
@@ -177,44 +175,25 @@ public class KnyTeleop extends LinearOpMode {
             telemetry.update();
         }
     }
-    // cybugs
-    public void cybugs() {
-        // cybugs high chamber
-        liftController.setTargetPosition(LiftController.Position.CYBUGS);
-
-        armController.setChamber();
-        outtakeController.setWristCybugs();
-        outtakeController.setHandForward();
-    }
     // cyliis
     public void cyliis() {
         // cyliis high chamber
         liftController.setTargetPosition(LiftController.Position.CYLIIS);
-
         armController.setChamber();
-        outtakeController.setWristCyliis();
-        outtakeController.setHandBackward();
-
     }
 
     // take
     public void takeSpecimen() {
         // take specimen
         liftController.setTargetPosition(LiftController.Position.HOME);
-
         armController.setTake();
-        outtakeController.setWristTake();
-        outtakeController.setHandBackward();
     }
 
     // high basket
     public void highBasket() {
         // high basket
         liftController.setTargetPosition(LiftController.Position.BASKET);
-
         armController.setBasket();
-        outtakeController.setHandForward();
-        outtakeController.setWristBasket();
     }
 
 }

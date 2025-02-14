@@ -9,7 +9,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.controllers.ArmController;
 import org.firstinspires.ftc.teamcode.controllers.OuttakeController;
 
-@Config
 @TeleOp(name = "rofl up", group = "rofls")
 public class RoflUp extends LinearOpMode {
     OuttakeController outtakeController = new OuttakeController();
@@ -19,32 +18,22 @@ public class RoflUp extends LinearOpMode {
     public void runOpMode() {
 
         MultipleTelemetry telemetry = new MultipleTelemetry(FtcDashboard.getInstance().getTelemetry());
-        outtakeController.initialize(hardwareMap, false);
-        armController.initialize(hardwareMap, false);
+        outtakeController.initialize(hardwareMap);
+        armController.initialize(hardwareMap);
 
         waitForStart();
 
         while(opModeIsActive()) {
-            if (gamepad1.b) {
-                // take
-                armController.setTake();
-                outtakeController.setHandBackward();
-                outtakeController.setWristTake();
-            } else if (gamepad1.y) {
+            if (gamepad1.dpad_up) {
                 // cybugs
                 armController.setChamber();
-                outtakeController.setHandForward();
-                outtakeController.setWristCybugs();
-            } else if (gamepad1.x) {
-                // cyliis
-                armController.setChamber();
-                outtakeController.setHandBackward();
-                outtakeController.setWristCyliis();
-            } else if (gamepad1.a) {
+            } else if (gamepad1.dpad_left) {
                 // basket
                 armController.setBasket();
-                outtakeController.setWristBasket();
-                outtakeController.setHandForward();
+            } else if (gamepad1.dpad_down) {
+                armController.setTake();
+            } else if (gamepad1.dpad_right) {
+                armController.setPass();
             }
 
             if (gamepad1.left_bumper) {

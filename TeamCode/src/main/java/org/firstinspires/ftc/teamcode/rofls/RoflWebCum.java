@@ -152,9 +152,9 @@ public class RoflWebCum extends LinearOpMode {
 
     public void intakeWristConfigure(int angle) {
         if (angle >= 110 && angle <= 140) {
-            intakeController.setHandMaxDiagonal();
+//            intakeController.setHandMaxDiagonal();
         } else if (angle >= 20 && angle <= 70) {
-            intakeController.setHandMinDiagonal();
+//            intakeController.setHandMinDiagonal();
         } else if (angle >= 140 || angle <= 50) {
             intakeController.setHandMax();
         } else {

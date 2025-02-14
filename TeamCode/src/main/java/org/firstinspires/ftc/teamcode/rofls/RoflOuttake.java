@@ -8,7 +8,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.controllers.OuttakeController;
 
-@Config
 @TeleOp(name = "rofl outtake", group = "rofls")
 public class RoflOuttake extends LinearOpMode {
     OuttakeController outtakeController = new OuttakeController();
@@ -17,21 +16,11 @@ public class RoflOuttake extends LinearOpMode {
     public void runOpMode() {
 
         MultipleTelemetry telemetry = new MultipleTelemetry(FtcDashboard.getInstance().getTelemetry());
-        outtakeController.initialize(hardwareMap, false);
+        outtakeController.initialize(hardwareMap);
 
         waitForStart();
 
         while(opModeIsActive()) {
-            if (gamepad1.b) {
-                outtakeController.setHandBackward();
-                outtakeController.setWristTake();
-            } else if (gamepad1.y) {
-                outtakeController.setHandForward();
-                outtakeController.setWristCybugs();
-            } else if (gamepad1.x) {
-                outtakeController.setHandForward();
-                outtakeController.setWristCyliis();
-            }
 
             if (gamepad1.left_bumper) {
                 outtakeController.setClawOpen();
