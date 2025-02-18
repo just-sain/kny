@@ -14,31 +14,30 @@ public class IntakeController {
     // wrist
     private Servo wrist;
     // wrist positions
-    public static double WRIST_HOME_POS   = 0;
-    public static double WRIST_DETECT_POS = 0.55;
-    public static double WRIST_UP_POS     = 0.45;
-    public static double WRIST_TAKE_POS   = 0.89;
+    public static double WRIST_HOME_POS     = 0.9;
+    public static double WRIST_UP_POS       = 0.55;
+    public static double WRIST_TAKE_POS     = 0.1;
 
     // hand
     private Servo hand;
     // hand positions
     public static double HAND_MIN_POS     = 0;
-    public static double HAND_NEUTRAL_POS = 0.53;
+    public static double HAND_NEUTRAL_POS = 0.5;
     public static double HAND_MAX_POS     = 1;
 
     // claw
     private Servo claw;
     // claw positions
-    public static double CLAW_OPEN_POS  = 0.525;
-    public static double CLAW_CLOSE_POS = 0.87;
+    public static double CLAW_OPEN_POS  = 0.52;
+    public static double CLAW_CLOSE_POS = 0.18;
 
     // initialize
-    public void initialize(HardwareMap hardwareMap) {
+    public void initialize(HardwareMap hardwareMap, boolean isAuto) {
         // wrist
         wrist = hardwareMap.get(Servo.class, "i-wrist");
         wrist.setDirection(Servo.Direction.REVERSE);
         wrist.scaleRange(0, 1);
-        wrist.setPosition(WRIST_UP_POS);
+        wrist.setPosition(isAuto ? WRIST_HOME_POS : WRIST_UP_POS);
 
         // hand
         hand = hardwareMap.get(Servo.class, "i-hand");
@@ -63,9 +62,6 @@ public class IntakeController {
     }
     public void setWristHome() {
         wrist.setPosition(WRIST_HOME_POS);
-    }
-    public void setWristDetect() {
-        wrist.setPosition(WRIST_DETECT_POS);
     }
 
     // wrist actions

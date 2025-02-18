@@ -10,6 +10,9 @@ import org.firstinspires.ftc.teamcode.controllers.IntakeController;
 import org.firstinspires.ftc.teamcode.controllers.LiftController;
 import org.firstinspires.ftc.teamcode.controllers.OuttakeController;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 
 // kiroshi it's not yaku KNY
 @TeleOp(name = "Kny teleop", group = "modes")
@@ -28,11 +31,11 @@ public class KnyTeleop extends LinearOpMode {
 
         baseController.initialize(hardwareMap);
         extendController.initialize(hardwareMap);
-        intakeController.initialize(hardwareMap);
+        intakeController.initialize(hardwareMap, false);
 
         liftController.initialize(hardwareMap);
         armController.initialize(hardwareMap);
-        outtakeController.initialize(hardwareMap);
+        outtakeController.initialize(hardwareMap, false);
 
         // ftc dashboard debug
 //        MultipleTelemetry telemetry = new MultipleTelemetry(FtcDashboard.getInstance().getTelemetry());
@@ -58,6 +61,14 @@ public class KnyTeleop extends LinearOpMode {
                 cyliis();
             } else if (gamepad2.dpad_left) {
                 highBasket();
+            } else if (gamepad2.dpad_right) {
+                // hang
+                liftController.setTargetPosition(LiftController.Position.HANG);
+                armController.setHome();
+
+                extendController.setTargetPosition(ExtendController.Position.HANG);
+                intakeController.setClawClose();
+                intakeController.setWristUp();
             }
 
             // -- lift pid mode switch --
@@ -90,8 +101,8 @@ public class KnyTeleop extends LinearOpMode {
                 intakeController.setWristUp();
             } else if (gamepad2.y) {
                 intakeController.setWristHome();
+                intakeController.setClawClose();
             }
-
             // -- intake hand --
             if (Math.abs(gamepad2.left_stick_x) > 0.05) {
                 intakeController.setHandCustom(gamepad2.left_stick_x);
@@ -185,7 +196,7 @@ public class KnyTeleop extends LinearOpMode {
     // take
     public void takeSpecimen() {
         // take specimen
-        liftController.setTargetPosition(LiftController.Position.HOME);
+        liftController.setTargetPosition(LiftController.Position.TAKE);
         armController.setTake();
     }
 

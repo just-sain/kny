@@ -24,9 +24,9 @@ public class RoflPass extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         MultipleTelemetry telemetry = new MultipleTelemetry(FtcDashboard.getInstance().getTelemetry());
-        outtakeController.initialize(hardwareMap);
+        outtakeController.initialize(hardwareMap, false);
         extendController.initialize(hardwareMap);
-        intakeController.initialize(hardwareMap);
+        intakeController.initialize(hardwareMap, false);
         liftController.initialize(hardwareMap);
         armController.initialize(hardwareMap);
 
@@ -47,7 +47,7 @@ public class RoflPass extends LinearOpMode {
             }
 
             if (gamepad1.a) {
-                armController.setPass();
+                armController.setTake();
                 liftController.setTargetPosition(LiftController.Position.PASS);
             } else if (gamepad1.b) {
                 intakeController.setWristHome();

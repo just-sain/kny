@@ -30,9 +30,11 @@ public class LiftController {
         // home
         HOME(0),
         // TAKE
-        TAKE(0),
+        TAKE(150),
         // CYLIIS
-        CYLIIS(1200),
+        CYLIIS(1175),
+        // hang
+        HANG(2000),
         // basket
         BASKET(2300),
         // pass

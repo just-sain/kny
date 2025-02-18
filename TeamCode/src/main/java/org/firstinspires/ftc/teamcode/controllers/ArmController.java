@@ -11,11 +11,10 @@ public class ArmController {
     // motors
     private Servo lArm, rArm;
 
-    public static double PASS_POS = 1;
-    public static double CHAMBER_POS = 0.975;
-    public static double BASKET_POS = 0.85;
-    public static double TAKE_POS = 0.09;
-    public static double HOME_POS = 0;
+    public static double CHAMBER_POS = 0.05;
+    public static double BASKET_POS = 0.25;
+    public static double TAKE_POS = 0.95;
+    public static double HOME_POS = 0.95;
 
 
     // initialize
@@ -32,9 +31,9 @@ public class ArmController {
     }
 
     // position
-    public void setPass() {lArm.setPosition(PASS_POS); rArm.setPosition(PASS_POS);}
     public void setChamber() {lArm.setPosition(CHAMBER_POS); rArm.setPosition(CHAMBER_POS);}
     public void setTake() {lArm.setPosition(TAKE_POS); rArm.setPosition(TAKE_POS);}
+    public void setHome() {lArm.setPosition(HOME_POS); rArm.setPosition(HOME_POS);}
     public void setBasket() {lArm.setPosition(BASKET_POS); rArm.setPosition(BASKET_POS);}
 
     // logs for debugging

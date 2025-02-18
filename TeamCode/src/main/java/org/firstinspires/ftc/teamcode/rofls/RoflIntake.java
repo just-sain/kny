@@ -19,7 +19,7 @@ public class RoflIntake extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         // init
-        intakeController.initialize(hardwareMap);
+        intakeController.initialize(hardwareMap, false);
 
         // wait for start
         waitForStart();

@@ -21,7 +21,7 @@ public class RoflArm extends LinearOpMode {
 
         while(opModeIsActive()) {
             if (gamepad1.a) {
-                armController.setPass();
+                armController.setHome();
             } else if (gamepad1.b) {
                 armController.setTake();
             } else if (gamepad1.y) {

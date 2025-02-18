@@ -18,7 +18,7 @@ public class RoflUp extends LinearOpMode {
     public void runOpMode() {
 
         MultipleTelemetry telemetry = new MultipleTelemetry(FtcDashboard.getInstance().getTelemetry());
-        outtakeController.initialize(hardwareMap);
+        outtakeController.initialize(hardwareMap, false);
         armController.initialize(hardwareMap);
 
         waitForStart();
@@ -33,7 +33,7 @@ public class RoflUp extends LinearOpMode {
             } else if (gamepad1.dpad_down) {
                 armController.setTake();
             } else if (gamepad1.dpad_right) {
-                armController.setPass();
+                armController.setHome();
             }
 
             if (gamepad1.left_bumper) {
