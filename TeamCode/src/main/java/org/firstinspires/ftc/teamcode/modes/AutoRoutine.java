@@ -59,39 +59,39 @@ public class AutoRoutine extends LinearOpMode {
 
         // push three samples
         Vector2d strafeSampleTwo = new Vector2d(42, -28);
-        Vector2d backSampleTwo = new Vector2d(19.5, -25);
-        Vector2d forwardTheeSample  = new Vector2d(43, -18);
-        Vector2d strafeTheeSample  = new Vector2d(43, -31);
+        Vector2d backSampleTwo = new Vector2d(19.5, -28);
+        Vector2d forwardTheeSample  = new Vector2d(42, -18);
+        Vector2d strafeTheeSample  = new Vector2d(42, -31);
         Vector2d backTheeSample  = new Vector2d(19.5, -31);
         Vector2d forwardForthSample  = new Vector2d(42, -28);
         Vector2d strafeForthSample  = new Vector2d(42, -38);
         Vector2d backForthSample  = new Vector2d(19, -38);
 
         // chamber sample
-        Pose2d humanPlayerFirstChamber = new Pose2d(0.1, -15, Math.toRadians(0));
-        Pose2d chamberFirst = new Pose2d(44, 40, Math.toRadians(0));
+        Pose2d humanPlayerFirstChamber = new Pose2d(-0.8, -15, Math.toRadians(0));
+        Pose2d chamberFirst = new Pose2d(36, 40, Math.toRadians(0));
 
-        Pose2d humanPlayerSecondChamber = new Pose2d(0, -20, Math.toRadians(0));
-        Pose2d chamberSecond = new Pose2d(42, 36, Math.toRadians(0));
+        Pose2d humanPlayerSecondChamber = new Pose2d(-1.7, -23, Math.toRadians(0));
+        Pose2d chamberSecond = new Pose2d(35, 37, Math.toRadians(0));
 
-        Pose2d humanPlayerThirdChamber = new Pose2d(0, -20, Math.toRadians(0));
-        Pose2d chamberThird = new Pose2d(42, 35.5, Math.toRadians(0));
+        Pose2d humanPlayerThirdChamber = new Pose2d(-1.4, -23, Math.toRadians(0));
+        Pose2d chamberThird = new Pose2d(35, 35, Math.toRadians(0));
 
-        Pose2d humanPlayerFourthChamber = new Pose2d(0, -20, Math.toRadians(0));
-        Pose2d chamberFourth = new Pose2d(42, 37, Math.toRadians(0));
+        Pose2d humanPlayerFourthChamber = new Pose2d(-1.8   , -23, Math.toRadians(0));
+        Pose2d chamberFourth = new Pose2d(35, 34, Math.toRadians(0));
 
-        Pose2d humanPlayerFifthChamber = new Pose2d(0, -20, Math.toRadians(0));
-        Pose2d chamberFifth = new Pose2d(42, 36.5, Math.toRadians(0));
+        Pose2d humanPlayerFifthChamber = new Pose2d(-2.55, -23, Math.toRadians(0));
+        Pose2d chamberFifth = new Pose2d(35, 33, Math.toRadians(0));
 
         // from chamber
-        Vector2d FromSubmarineFirst = new Vector2d(30, 36);
-        Vector2d FromSubmarineSecond = new Vector2d(30, 33);
-        Vector2d FromSubmarineThird = new Vector2d(30, 32);
-        Vector2d FromSubmarineFourth = new Vector2d(30, 33);
-        Vector2d FromSubmarineFifth = new Vector2d(30, 33);
+        Vector2d FromSubmarineFirst = new Vector2d(27, 36);
+        Vector2d FromSubmarineSecond = new Vector2d(27, 33);
+        Vector2d FromSubmarineThird = new Vector2d(27, 32);
+        Vector2d FromSubmarineFourth = new Vector2d(27, 32);
+        Vector2d FromSubmarineFifth = new Vector2d(27 , 32);
 
         // wait seconds
-        double takeWaitSeconds = 0.1;
+        double takeWaitSeconds = 0.125;
 
 
 //        // trajectories
@@ -175,7 +175,7 @@ public class AutoRoutine extends LinearOpMode {
         Action liftToBasket = liftController.setTargetPositionAction(LiftController.Position.BASKET);
         Action liftToHome = liftController.setTargetPositionAction(LiftController.Position.HOME);
 
-        long sleepTimeForChamber = 75;
+        long sleepTimeForChamber = 50;
 
         // wait for start
         waitForStart();
@@ -210,6 +210,21 @@ public class AutoRoutine extends LinearOpMode {
         );
     }
 
+    // sleep action, sometimes help
+    public Action sleepAction(long milliseconds) {
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                for (int i = 0; i <= milliseconds; i += 25) {
+                    liftController.periodic();
+
+                    sleep(25);
+                }
+                return false;
+            }
+        };
+    }
+
     // cyliis
     public void cyliis() {
         // cyliis high chamber
@@ -231,18 +246,5 @@ public class AutoRoutine extends LinearOpMode {
         armController.setTake();
     }
 
-    // sleep action, sometimes help
-    public Action sleepAction(long milliseconds) {
-        return new Action() {
-            @Override
-            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-                for (int i = 0; i <= milliseconds; i += 25) {
-                    liftController.periodic();
 
-                    sleep(25);
-                }
-                return false;
-            }
-        };
-    }
 }

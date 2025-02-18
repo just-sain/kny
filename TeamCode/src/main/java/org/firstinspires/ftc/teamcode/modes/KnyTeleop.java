@@ -23,7 +23,7 @@ public class KnyTeleop extends LinearOpMode {
     IntakeController intakeController = new IntakeController();
 
     LiftController liftController = new LiftController();
-    ArmController armController = new ArmController();
+//    ArmController armController = new ArmController();
     OuttakeController outtakeController = new OuttakeController();
 
     @Override
@@ -34,7 +34,7 @@ public class KnyTeleop extends LinearOpMode {
         intakeController.initialize(hardwareMap, false);
 
         liftController.initialize(hardwareMap);
-        armController.initialize(hardwareMap);
+//        armController.initialize(hardwareMap);
         outtakeController.initialize(hardwareMap, false);
 
         // ftc dashboard debug
@@ -64,7 +64,7 @@ public class KnyTeleop extends LinearOpMode {
             } else if (gamepad2.dpad_right) {
                 // hang
                 liftController.setTargetPosition(LiftController.Position.HANG);
-                armController.setHome();
+//                armController.setHome();
 
                 extendController.setTargetPosition(ExtendController.Position.HANG);
                 intakeController.setClawClose();
@@ -105,7 +105,7 @@ public class KnyTeleop extends LinearOpMode {
             }
             // -- intake hand --
             if (Math.abs(gamepad2.left_stick_x) > 0.05) {
-                intakeController.setHandCustom(gamepad2.left_stick_x);
+                intakeController.setHandCustom(-gamepad2.left_stick_x);
             } else {
                 intakeController.setHandNeutral();
             }
@@ -178,7 +178,7 @@ public class KnyTeleop extends LinearOpMode {
             liftController.showLogs(telemetry);
 
             telemetry.addLine("--- ARM ---");
-            armController.showLogs(telemetry);
+//            armController.showLogs(telemetry);
 
             telemetry.addLine("--- OUTTAKE ---");
             outtakeController.showLogs(telemetry);
@@ -190,21 +190,21 @@ public class KnyTeleop extends LinearOpMode {
     public void cyliis() {
         // cyliis high chamber
         liftController.setTargetPosition(LiftController.Position.CYLIIS);
-        armController.setChamber();
+//        armController.setChamber();
     }
 
     // take
     public void takeSpecimen() {
         // take specimen
         liftController.setTargetPosition(LiftController.Position.TAKE);
-        armController.setTake();
+//        armController.setTake();
     }
 
     // high basket
     public void highBasket() {
         // high basket
         liftController.setTargetPosition(LiftController.Position.BASKET);
-        armController.setBasket();
+//        armController.setBasket();
     }
 
 }
