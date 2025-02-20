@@ -28,8 +28,8 @@ public class IntakeController {
     // claw
     private Servo claw;
     // claw positions
-    public static double CLAW_OPEN_POS  = 0.52;
-    public static double CLAW_CLOSE_POS = 0.18;
+    public static double CLAW_OPEN_POS  = 0.38;
+    public static double CLAW_CLOSE_POS = 0.08;
 
     // initialize
     public void initialize(HardwareMap hardwareMap, boolean isAuto) {
