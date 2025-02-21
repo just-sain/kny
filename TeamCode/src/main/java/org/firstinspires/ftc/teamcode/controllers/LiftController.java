@@ -30,7 +30,7 @@ public class LiftController {
         // home
         HOME(0),
         // TAKE
-        TAKE(50),
+        TAKE(25),
         // CYLIIS
         CYLIIS(1250),
         // hang

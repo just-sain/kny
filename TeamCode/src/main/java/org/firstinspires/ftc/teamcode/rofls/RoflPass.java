@@ -28,7 +28,7 @@ public class RoflPass extends LinearOpMode {
         extendController.initialize(hardwareMap);
         intakeController.initialize(hardwareMap, false);
         liftController.initialize(hardwareMap);
-        armController.initialize(hardwareMap);
+        armController.initialize(hardwareMap, false);
 
 
         waitForStart();

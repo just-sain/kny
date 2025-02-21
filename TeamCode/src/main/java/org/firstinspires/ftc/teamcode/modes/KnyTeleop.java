@@ -34,7 +34,7 @@ public class KnyTeleop extends LinearOpMode {
         intakeController.initialize(hardwareMap, false);
 
         liftController.initialize(hardwareMap);
-        armController.initialize(hardwareMap);
+        armController.initialize(hardwareMap, false);
         outtakeController.initialize(hardwareMap, false);
 
         // ftc dashboard debug

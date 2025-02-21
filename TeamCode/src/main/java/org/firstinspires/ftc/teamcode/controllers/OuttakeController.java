@@ -15,16 +15,16 @@ public class OuttakeController {
     // claw
     private Servo claw;
     // claw positions
-    public static double CLAW_OPEN_POS = 0.45;
-    public static double CLAW_CLOSE_POS = 0.72;
+    public static double CLAW_OPEN_POS = 0.72;
+    public static double CLAW_CLOSE_POS = 0.37;
 
     // initialize
-    public void initialize(HardwareMap hardwareMap, boolean isAuto) {
+    public void initialize(HardwareMap hardwareMap, boolean isClawOpen) {
         // claw
         claw = hardwareMap.get(Servo.class, "o-claw");
         claw.scaleRange(0, 1);
         claw.setDirection(Servo.Direction.FORWARD);
-        claw.setPosition(isAuto ? CLAW_OPEN_POS : CLAW_CLOSE_POS);
+        claw.setPosition(isClawOpen ? CLAW_OPEN_POS : CLAW_CLOSE_POS);
     }
 
     // claw handles

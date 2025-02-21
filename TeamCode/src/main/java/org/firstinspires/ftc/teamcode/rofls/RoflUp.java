@@ -19,7 +19,7 @@ public class RoflUp extends LinearOpMode {
 
         MultipleTelemetry telemetry = new MultipleTelemetry(FtcDashboard.getInstance().getTelemetry());
         outtakeController.initialize(hardwareMap, false);
-        armController.initialize(hardwareMap);
+        armController.initialize(hardwareMap, false);
 
         waitForStart();
 

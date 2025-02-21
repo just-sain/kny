@@ -122,7 +122,7 @@ public class PinpointDrive extends MecanumDrive {
         pinpoint.setPosition(pose);
     }
 
-    public PinpointDrive(HardwareMap hardwareMap, Pose2d pose, LiftController liftController, ArmController armController) {
+    public PinpointDrive(HardwareMap hardwareMap, Pose2d pose, LiftController liftController) {
 
         super(hardwareMap, pose);
 
