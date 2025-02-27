@@ -15,8 +15,9 @@ public class OuttakeController {
     // claw
     private Servo claw;
     // claw positions
-    public static double CLAW_OPEN_POS = 0.72;
-    public static double CLAW_CLOSE_POS = 0.37;
+    public static double CLAW_OPEN_POS = 0.5;
+    public static double CLAW_OPEN_TELEOP_POS = 0.55;
+    public static double CLAW_CLOSE_POS = 0.3;
 
     // initialize
     public void initialize(HardwareMap hardwareMap, boolean isClawOpen) {
@@ -24,12 +25,15 @@ public class OuttakeController {
         claw = hardwareMap.get(Servo.class, "o-claw");
         claw.scaleRange(0, 1);
         claw.setDirection(Servo.Direction.FORWARD);
-        claw.setPosition(isClawOpen ? CLAW_OPEN_POS : CLAW_CLOSE_POS);
+        claw.setPosition(isClawOpen ? CLAW_OPEN_TELEOP_POS : CLAW_CLOSE_POS);
     }
 
     // claw handles
     public void setClawOpen() {
         claw.setPosition(CLAW_OPEN_POS);
+    }
+    public void setClawOpenTeleop() {
+        claw.setPosition(CLAW_OPEN_TELEOP_POS);
     }
     public void setClawClose() {
         claw.setPosition(CLAW_CLOSE_POS);

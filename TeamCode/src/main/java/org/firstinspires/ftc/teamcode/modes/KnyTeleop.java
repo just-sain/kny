@@ -156,7 +156,7 @@ public class KnyTeleop extends LinearOpMode {
             // -- outtake claw --
             if (gamepad1.left_bumper) {
                 // open outtake claw
-                outtakeController.setClawOpen();
+                outtakeController.setClawOpenTeleop();
             } else if (gamepad1.right_bumper) {
                 // close outtake claw
                 outtakeController.setClawClose();

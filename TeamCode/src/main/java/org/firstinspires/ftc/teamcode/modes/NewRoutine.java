@@ -54,44 +54,46 @@ public class NewRoutine extends LinearOpMode {
         PinpointDrive drive = new PinpointDrive(hardwareMap, initialPose, liftController);
 
         // push robot
-        Vector2d firstChamber = new Vector2d(25, 0);
+        Vector2d firstChamber = new Vector2d(25.5, 0);
 
-        Vector2d fromSubmarine = new Vector2d(10, -14);
+        Vector2d fromSubmarine = new Vector2d(10, -15);
 
         // go sample 1
-        Vector2d forwardSampleTwo = new Vector2d(43, -45);
+        Vector2d forwardSampleTwo = new Vector2d(44, -50);
 
         // push three samples
-        Vector2d strafeSampleTwo = new Vector2d(43, -49);
-        Vector2d backSampleTwo = new Vector2d(19, -49);
-        Vector2d forwardTheeSample  = new Vector2d(42, -40);
-        Vector2d strafeTheeSample  = new Vector2d(42, -51);
-        Vector2d backTheeSample  = new Vector2d(19.5, -51);
+        Vector2d strafeSampleTwo = new Vector2d(44, -56);
+        Vector2d backSampleTwo = new Vector2d(18, -52);
+        Vector2d forwardTheeSample  = new Vector2d(43, -32);
+        Vector2d strafeTheeSample  = new Vector2d(43, -52);
+        Vector2d backTheeSample  = new Vector2d(19.5, -52);
         Vector2d forwardForthSample  = new Vector2d(42, -46);
-        Vector2d strafeForthSample  = new Vector2d(42, -52);
-        Vector2d backForthSample  = new Vector2d(19, -52);
+        Vector2d strafeForthSample  = new Vector2d(42, -58);
+        Vector2d backForthSample  = new Vector2d(19, -58);
 
         // chamber sample
-        Pose2d humanPlayerSecondChamber = new Pose2d(-2.2, -35, Math.toRadians(0));
-        Pose2d chamberSecond = new Pose2d(38, 26, Math.toRadians(0));
+        Pose2d humanPlayerSecondChamber = new Pose2d(-3.5, -35, Math.toRadians(0));
+        Vector2d strafeToSpecimen2 = new Vector2d(9, -35);
+        Vector2d BackToSpecimen2 = new Vector2d(-1, -35);
+        Pose2d chamberSecond = new Pose2d(40, 13, Math.toRadians(0));
 
-        Pose2d humanPlayerThirdChamber = new Pose2d(-2.9, -45, Math.toRadians(0));
-        Pose2d chamberThird = new Pose2d(37.5, 21, Math.toRadians(0));
+        Pose2d humanPlayerThirdChamber = new Pose2d(-3.7, -45, Math.toRadians(0));
+        Pose2d chamberThird = new Pose2d(37.4, 18, Math.toRadians(0));
 
-        Pose2d humanPlayerFourthChamber = new Pose2d(-2.9, -45, Math.toRadians(0));
-        Pose2d chamberFourth = new Pose2d(37.5, 18, Math.toRadians(0));
+        Pose2d humanPlayerFourthChamber = new Pose2d(-3.3, -45, Math.toRadians(0));
+        Pose2d chamberFourth = new Pose2d(37.1, 15, Math.toRadians(0));
 
-        Pose2d humanPlayerFifthChamber = new Pose2d(-2.9, -45, Math.toRadians(0));
-        Pose2d chamberFifth = new Pose2d(37.5, 16, Math.toRadians(0));
+        Pose2d humanPlayerFifthChamber = new Pose2d(-3.3, -45, Math.toRadians(0));
+        Pose2d chamberFifth = new Pose2d(37.2, 10, Math.toRadians(0));
 
         Pose2d humanPlayerParkingChamber = new Pose2d(-2.6, -45, Math.toRadians(0));
 
 
         // from chamber
         Vector2d FromSubmarineSecond = new Vector2d(27, 20);
-        Vector2d FromSubmarineThird = new Vector2d(27, 18);
-        Vector2d FromSubmarineFourth = new Vector2d(27, 16);
-        Vector2d FromSubmarineFifth = new Vector2d(27, 16);
+        Vector2d FromSubmarineThird = new Vector2d(27, 10);
+        Vector2d FromSubmarineFourth = new Vector2d(27, 10);
+        Vector2d FromSubmarineFifth = new Vector2d(27, 8);
 
 
         // wait seconds
@@ -102,24 +104,26 @@ public class NewRoutine extends LinearOpMode {
                 .strafeTo(firstChamber);
 
         TrajectoryActionBuilder FromSubramineFirst = ChamberFirst.endTrajectory().fresh()
-                .strafeTo(fromSubmarine, maxVel)
+                .strafeTo(fromSubmarine)
                 .afterDisp(0, () -> takeSpecimen());
 
 //        // trajectories
         TrajectoryActionBuilder ToSample = FromSubramineFirst.endTrajectory().fresh()
-                .strafeTo(forwardSampleTwo, maxVel)
-                .strafeTo(strafeSampleTwo, maxVel)
-                .strafeTo(backSampleTwo, maxVel)
-                .strafeTo(forwardTheeSample, maxVel)
-                .strafeTo(strafeTheeSample, maxVel)
-                .strafeTo(backTheeSample, maxVel)
-                .strafeTo(forwardForthSample, maxVel)
-                .strafeTo(strafeForthSample, maxVel)
-                .strafeTo(backForthSample, maxVel)
+                .strafeTo(forwardSampleTwo)
+                .strafeTo(strafeSampleTwo)
+                .strafeTo(backSampleTwo)
+                .strafeTo(forwardTheeSample)
+                .strafeTo(strafeTheeSample)
+                .strafeTo(backTheeSample)
+                .strafeTo(forwardForthSample)
+                .strafeTo(strafeForthSample)
+                .strafeTo(backForthSample)
                 .afterDisp(0, () -> takeSpecimen());
 
         TrajectoryActionBuilder ChamberSecond = ToSample.endTrajectory().fresh()
-                .splineToLinearHeading(humanPlayerSecondChamber, Math.toRadians(0), maxVel)
+                .strafeTo(strafeToSpecimen2, maxVel)
+                .strafeTo(BackToSpecimen2, maxVel)
+//                .splineToLinearHeading(humanPlayerSecondChamber, Math.toRadians(0), maxVel)
 
                 .afterDisp(0, () -> outtakeController.setClawClose())
                 .waitSeconds(takeWaitSeconds)
@@ -174,7 +178,8 @@ public class NewRoutine extends LinearOpMode {
         Action liftToBasket = liftController.setTargetPositionAction(LiftController.Position.BASKET);
         Action liftToHome = liftController.setTargetPositionAction(LiftController.Position.HOME);
 
-        long sleepTimeForChamber = 100;
+        long sleepTimeForChamber = 125;
+        long sleepTimeForChamberShort = 75;
 
         // wait for start
         waitForStart();
@@ -184,7 +189,7 @@ public class NewRoutine extends LinearOpMode {
                 new SequentialAction(
                         ChamberFirst.build(),
                         outtakeController.setClawOpenAction(),
-                        sleepAction(sleepTimeForChamber),
+                        sleepAction(sleepTimeForChamberShort),
 
                         FromSubramineFirst.build(),
 
@@ -204,7 +209,7 @@ public class NewRoutine extends LinearOpMode {
 
                         ChamberFifth.build(),
                         outtakeController.setClawOpenAction(),
-                        sleepAction(sleepTimeForChamber),
+                        sleepAction(sleepTimeForChamberShort),
 
                         Parking.build()
                 )

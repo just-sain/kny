@@ -55,29 +55,29 @@ public class AutoRoutine extends LinearOpMode {
 
 
         // go sample 1
-        Vector2d forwardSampleTwo = new Vector2d(42, -20);
+        Vector2d forwardSampleTwo = new Vector2d(42, -23);
 
         // push three samples
-        Vector2d strafeSampleTwo = new Vector2d(42, -28);
-        Vector2d backSampleTwo = new Vector2d(19.5, -28);
-        Vector2d forwardTheeSample  = new Vector2d(42, -25);
-        Vector2d strafeTheeSample  = new Vector2d(42, -35);
-        Vector2d backTheeSample  = new Vector2d(19.5, -35);
-        Vector2d forwardForthSample  = new Vector2d(42, -33);
-        Vector2d strafeForthSample  = new Vector2d(42, -43);
-        Vector2d backForthSample  = new Vector2d(19, -43);
+        Vector2d strafeSampleTwo = new Vector2d(42, -23);
+        Vector2d backSampleTwo = new Vector2d(19.5, -19);
+        Vector2d forwardTheeSample  = new Vector2d(42, -8);
+        Vector2d strafeTheeSample  = new Vector2d(42, -26);
+        Vector2d backTheeSample  = new Vector2d(19.5, -26);
+        Vector2d forwardForthSample  = new Vector2d(42, -26);
+        Vector2d strafeForthSample  = new Vector2d(42, -55);
+        Vector2d backForthSample  = new Vector2d(19, -55);
 
         // chamber sample
         Pose2d humanPlayerFirstChamber = new Pose2d(-2, -15, Math.toRadians(0));
         Pose2d chamberFirst = new Pose2d(36, 40, Math.toRadians(0));
 
-        Pose2d humanPlayerSecondChamber = new Pose2d(-1.85, -23, Math.toRadians(0));
-        Pose2d chamberSecond = new Pose2d(34, 37, Math.toRadians(0));
+        Pose2d humanPlayerSecondChamber = new Pose2d(-12, -23, Math.toRadians(0));
+        Pose2d chamberSecond = new Pose2d(35, 37, Math.toRadians(0));
 
-        Pose2d humanPlayerThirdChamber = new Pose2d(-1.85, -23, Math.toRadians(0));
+        Pose2d humanPlayerThirdChamber = new Pose2d(-2.2, -23, Math.toRadians(0));
         Pose2d chamberThird = new Pose2d(34, 35, Math.toRadians(0));
 
-        Pose2d humanPlayerFourthChamber = new Pose2d(-1.85, -23, Math.toRadians(0));
+        Pose2d humanPlayerFourthChamber = new Pose2d(-2, -23, Math.toRadians(0));
         Pose2d chamberFourth = new Pose2d(34, 34, Math.toRadians(0));
 
         Pose2d humanPlayerFifthChamber = new Pose2d(-2.6, -23, Math.toRadians(0));
@@ -96,77 +96,77 @@ public class AutoRoutine extends LinearOpMode {
 
 //        // trajectories
         TrajectoryActionBuilder ToSample = drive.actionBuilder(initialPose)
-                .strafeTo(forwardSampleTwo, maxVel)
-                .strafeTo(strafeSampleTwo, maxVel)
-                .strafeTo(backSampleTwo, maxVel)
-                .strafeTo(forwardTheeSample, maxVel)
-                .strafeTo(strafeTheeSample, maxVel)
-                .strafeTo(backTheeSample, maxVel)
-                .strafeTo(forwardForthSample, maxVel)
-                .strafeTo(strafeForthSample, maxVel)
-                .strafeTo(backForthSample, maxVel)
+                .strafeTo(forwardSampleTwo)
+                .strafeTo(strafeSampleTwo)
+                .strafeTo(backSampleTwo)
+                .strafeTo(forwardTheeSample)
+                .strafeTo(strafeTheeSample)
+                .strafeTo(backTheeSample)
+                .strafeTo(forwardForthSample)
+                .strafeTo(strafeForthSample)
+                .strafeTo(backForthSample)
                 .afterDisp(0, () -> takeSpecimen());
 
         TrajectoryActionBuilder ChamberFirst = ToSample.endTrajectory().fresh()
-                .splineToLinearHeading(humanPlayerFirstChamber, Math.toRadians(0), maxVel)
+                .splineToLinearHeading(humanPlayerFirstChamber, Math.toRadians(0))
 
                 .afterDisp(0, () -> outtakeController.setClawClose())
                 .waitSeconds(takeWaitSeconds)
                 .afterDisp(0, () -> cyliis())
 
-                .splineToLinearHeading(chamberFirst, Math.toRadians(0), maxVel);
+                .splineToLinearHeading(chamberFirst, Math.toRadians(0));
 
 
         TrajectoryActionBuilder ChamberSecond = ChamberFirst.endTrajectory().fresh()
-                .strafeTo(FromSubmarineFirst, maxVel)
+                .strafeTo(FromSubmarineFirst)
                 .afterDisp(0, () -> takeSpecimen())
 
-                .splineToLinearHeading(humanPlayerSecondChamber, Math.toRadians(0), maxVel)
+                .splineToLinearHeading(humanPlayerSecondChamber, Math.toRadians(0))
                 .afterDisp(0, () -> outtakeController.setClawClose())
                 .waitSeconds(takeWaitSeconds)
                 .afterDisp(0, () -> cyliis())
 
-                .splineToLinearHeading(chamberSecond, Math.toRadians(0), maxVel);
+                .splineToLinearHeading(chamberSecond, Math.toRadians(0));
 
         // fourth 3
         TrajectoryActionBuilder ChamberThird = ChamberSecond.endTrajectory().fresh()
                 .strafeTo(FromSubmarineSecond, maxVel)
                 .afterDisp(0, () -> takeSpecimen())
 
-                .splineToLinearHeading(humanPlayerThirdChamber, Math.toRadians(0), maxVel)
+                .splineToLinearHeading(humanPlayerThirdChamber, Math.toRadians(0))
                 .afterDisp(0, () -> outtakeController.setClawClose())
                 .waitSeconds(takeWaitSeconds)
                 .afterDisp(0, () -> cyliis())
 
-                .splineToLinearHeading(chamberThird,Math.toRadians(0), maxVel);
+                .splineToLinearHeading(chamberThird,Math.toRadians(0));
 
         // fifth 4
         TrajectoryActionBuilder ChamberFourth = ChamberThird.endTrajectory().fresh()
-                .strafeTo(FromSubmarineThird, maxVel)
+                .strafeTo(FromSubmarineThird)
                 .afterDisp(0, () -> takeSpecimen())
 
-                .splineToLinearHeading(humanPlayerFourthChamber, Math.toRadians(0), maxVel)
+                .splineToLinearHeading(humanPlayerFourthChamber, Math.toRadians(0))
                 .afterDisp(0, () -> outtakeController.setClawClose())
                 .waitSeconds(takeWaitSeconds)
                 .afterDisp(0, () -> cyliis())
 
-                .splineToLinearHeading(chamberFourth, Math.toRadians(0), maxVel);
+                .splineToLinearHeading(chamberFourth, Math.toRadians(0));
 
         // fifth 5
         TrajectoryActionBuilder ChamberFifth = ChamberFourth.endTrajectory().fresh()
-                .strafeTo(FromSubmarineFourth, maxVel)
+                .strafeTo(FromSubmarineFourth)
 
                 .afterDisp(0, () -> takeSpecimen())
-                .splineToLinearHeading(humanPlayerFifthChamber, Math.toRadians(0), maxVel)
+                .splineToLinearHeading(humanPlayerFifthChamber, Math.toRadians(0))
                 .afterDisp(0, () -> outtakeController.setClawClose())
                 .waitSeconds(takeWaitSeconds)
                 .afterDisp(0, () -> cyliis())
 
-                .splineToLinearHeading(chamberFifth, Math.toRadians(0), maxVel);
+                .splineToLinearHeading(chamberFifth, Math.toRadians(0));
 
         // parking
         TrajectoryActionBuilder Parking = ChamberFifth.endTrajectory().fresh()
-                .strafeTo(FromSubmarineFifth, maxVel)
+                .strafeTo(FromSubmarineFifth)
                 .afterDisp(0, () -> toHome())
                 .splineToLinearHeading(humanPlayerFifthChamber, Math.toRadians(0), maxVel);
 
